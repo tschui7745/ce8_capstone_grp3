@@ -72,7 +72,7 @@ resource "aws_iam_role_policy_attachment" "iot_role_attach" {
 }
 
 resource "aws_sqs_queue" "shop_floor_data_queue" {
-  name = "shop_floor_data_queue"
+  name                      = "shop_floor_data_queue"
   receive_wait_time_seconds = 20
 }
 
@@ -158,9 +158,9 @@ resource "aws_lambda_function" "processShopFloorMsgs" {
 
 }
 
-resource "aws_lambda_event_source_mapping" "trigger" {
-  batch_size        = 100
+resource "aws_lambda_event_source_mapping" "trigger_" {
+  batch_size                         = 100
   maximum_batching_window_in_seconds = 1
-  event_source_arn  = aws_sqs_queue.shop_floor_data_queue.arn
-  function_name     = aws_lambda_function.processShopFloorMsgs.function_name
+  event_source_arn                   = aws_sqs_queue.shop_floor_data_queue.arn
+  function_name                      = aws_lambda_function.processShopFloorMsgs.function_name
 }

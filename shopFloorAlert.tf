@@ -1,5 +1,5 @@
 locals {
-     name_prefix = "chek" # provide your name prefix
+  name_prefix = "chek" # provide your name prefix
 }
 
 ##SES##
