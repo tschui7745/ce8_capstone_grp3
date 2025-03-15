@@ -3,7 +3,7 @@ const aws = require('aws-sdk')
 const oParams = {
     Destination: { /* required */
         ToAddresses: [
-            "chekyeaw+ce8@gmail.com",
+            "tschui+ce8@gmail.com",
             /* more items */
         ]
     },
@@ -19,7 +19,7 @@ const oParams = {
             Data: "KPI Alert"
         }
     },
-    Source: "chekyeaw@gmail.com", /* required */
+    Source: "tschui@gmail.com", /* required */
 }
 
 const ses = new aws.SES()

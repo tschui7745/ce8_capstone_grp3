@@ -305,18 +305,43 @@ resource "aws_api_gateway_stage" "stage-andon-api" {
   }
 }
 
-# Create a KMS key for CloudWatch Logs encryption
-resource "aws_kms_key" "api_gateway_logs_kms" { # tschui added
-  description             = "KMS key for encrypting CloudWatch logs for API Gateway"
-  enable_key_rotation     = true
-}
+# # Create a KMS key for CloudWatch Logs encryption
+# resource "aws_kms_key" "api_gateway_logs_kms" { // tschui added
+#   description         = "KMS key for encrypting CloudWatch logs for API Gateway"
+#   enable_key_rotation = true
 
+#   # Key Policy to allow CloudWatch Logs to use the key
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect    = "Allow"
+#         Principal = {
+#           Service = "logs.amazonaws.com"
+#         }
+#         Action    = "kms:Encrypt"
+#         Resource  = "*"
+#         Condition = {
+#           StringEquals = {
+#             "kms:ViaService" = "logs.ap-southeast-1.amazonaws.com"
+#           }
+#         }
+#       },
+#       {
+#         Effect    = "Allow"
+#         Principal = "*"
+#         Action    = "kms:DescribeKey"
+#         Resource  = "*"
+#       }
+#     ]
+#   })
+# }
 
 # CloudWatch Log Group for Access Logs
-resource "aws_cloudwatch_log_group" "api_gateway_logs" { # tschui added
-  name = "/aws/api-gateway/shopFloorData-logs"
+resource "aws_cloudwatch_log_group" "api_gateway_logs" {  // tschui added
+  name              = "/aws/api-gateway/shopFloorData-logs"
   retention_in_days = 365  # Set retention period to 365 days
 
-   # Enabling encryption with customer-managed KMS key
-  kms_key_id = aws_kms_key.api_gateway_logs_kms.arn 
+  # # Enabling encryption with customer-managed KMS key
+  # kms_key_id = aws_kms_key.api_gateway_logs_kms.arn
 }
