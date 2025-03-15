@@ -158,7 +158,7 @@ resource "aws_lambda_function" "processShopFloorMsgs" {
 
 }
 
-resource "aws_lambda_event_source_mapping" "trigger_" {
+resource "aws_lambda_event_source_mapping" "triggerShopFloorMsg" { # tschui change 
   batch_size                         = 100
   maximum_batching_window_in_seconds = 1
   event_source_arn                   = aws_sqs_queue.shop_floor_data_queue.arn
