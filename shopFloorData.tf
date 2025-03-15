@@ -1,3 +1,48 @@
+## API Invoking Policy Role ##
+
+# IAM Policy to allow invoking API Gateway
+resource "aws_iam_policy" "api_gateway_invoke_policy" {
+  name        = "APIGatewayInvokePolicy"
+  description = "IAM policy to invoke the ShopFloor API Gateway"
+  policy      = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect"   : "Allow",
+        "Action"   : "execute-api:Invoke",
+        "Resource" : "${aws_api_gateway_rest_api.shopFloor_api_gw.execution_arn}/*/*"
+      }
+    ]
+  })
+}
+
+# Attach the policy to an IAM role
+resource "aws_iam_role" "api_gateway_invoke_role" {
+  name = "api-gateway-invoke-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "apigateway.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "attach_api_invoke_policy" {
+  policy_arn = aws_iam_policy.api_gateway_invoke_policy.arn
+  role       = aws_iam_role.api_gateway_invoke_role.name
+}
+
+
 ## shopFloorData Lambda Execution Role ##
 
 resource "aws_iam_policy" "shopFloorData_lambda_policy" {
@@ -87,7 +132,8 @@ resource "aws_api_gateway_method" "post_shopFloor_data" {
   rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
   resource_id   = aws_api_gateway_resource.shopFloor_resource.id
   http_method   = "POST"
-  authorization = "NONE"
+  # authorization = "NONE"
+  authorization = "AWS_IAM" # tschui changed
 }
 
 resource "aws_api_gateway_method_response" "post_shopFloor_data_response_200" {
@@ -124,7 +170,8 @@ resource "aws_api_gateway_method" "get_shopFloor_data" {
   rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
   resource_id   = aws_api_gateway_resource.shopFloor_resource.id
   http_method   = "GET"
-  authorization = "NONE"
+  #authorization = "NONE"
+  authorization = "AWS_IAM" # tschui changed
   request_parameters = {
     "method.request.querystring.Plant" = true,
     "method.request.querystring.Line"  = true
@@ -165,7 +212,8 @@ resource "aws_api_gateway_method" "delete_shopFloor_data" {
   rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
   resource_id   = aws_api_gateway_resource.shopFloor_resource.id
   http_method   = "DELETE"
-  authorization = "NONE"
+  #authorization = "NONE"
+  authorization = "AWS_IAM" # tschui changed
   request_parameters = {
     "method.request.querystring.Plant"   = true,
     "method.request.querystring.Line"    = true,
