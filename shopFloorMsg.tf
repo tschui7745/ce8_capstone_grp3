@@ -156,6 +156,10 @@ resource "aws_lambda_function" "processShopFloorMsgs" {
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
+  # Enable X-Ray tracing
+  tracing_config {  # tschui added
+    mode = "Active"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "triggerShopFloorMsg" { # tschui change 

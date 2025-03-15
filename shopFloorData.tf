@@ -1,7 +1,7 @@
-## API Invoking Policy Role ##
+## API Invoking Policy Execution Role ##
 
 # IAM Policy to allow invoking API Gateway
-resource "aws_iam_policy" "api_gateway_invoke_policy" {
+resource "aws_iam_policy" "api_gateway_invoke_policy" { # tschui added
   name        = "APIGatewayInvokePolicy"
   description = "IAM policy to invoke the ShopFloor API Gateway"
   policy      = jsonencode({
@@ -17,8 +17,8 @@ resource "aws_iam_policy" "api_gateway_invoke_policy" {
 }
 
 # Attach the policy to an IAM role
-resource "aws_iam_role" "api_gateway_invoke_role" {
-  name = "api-gateway-invoke-role"
+resource "aws_iam_role" "api_gateway_invoke_role" {  # tschui added
+  name = "api-gateway-invoke-role"  
 
   assume_role_policy = <<EOF
 {
@@ -37,7 +37,7 @@ resource "aws_iam_role" "api_gateway_invoke_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "attach_api_invoke_policy" {
+resource "aws_iam_role_policy_attachment" "attach_api_invoke_policy" { # tschui added
   policy_arn = aws_iam_policy.api_gateway_invoke_policy.arn
   role       = aws_iam_role.api_gateway_invoke_role.name
 }
@@ -110,7 +110,11 @@ resource "aws_lambda_function" "shopFloorData_txnService" {
   timeout       = "15"
 
   source_code_hash = data.archive_file.lambdadata.output_base64sha256
-
+  
+  # Enable X-Ray tracing
+  tracing_config {  # tschui added
+    mode = "Active"
+  }
 }
 
 ## AWI API Gateway ##
@@ -290,4 +294,18 @@ resource "aws_api_gateway_stage" "stage-andon-api" {
   deployment_id = aws_api_gateway_deployment.shopFloorData_api_deploy.id
   rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
   stage_name    = "dev"
+
+  # Enabling X-Ray tracing
+  xray_tracing_enabled = true # tschui added
+
+ # Enabling Access Logging
+  access_log_settings { # tschui added
+    destination_arn = aws_cloudwatch_log_group.api_gateway_logs.arn
+    format          = "$context.requestId - $context.identity.sourceIp - $context.identity.userAgent - $context.requestTime - $context.status"
+  } 
+}
+ # CloudWatch Log Group for Access Logs
+ resource "aws_cloudwatch_log_group" "api_gateway_logs" {
+  name = "/aws/api-gateway/shopFloorData-logs"
+}    
 }
