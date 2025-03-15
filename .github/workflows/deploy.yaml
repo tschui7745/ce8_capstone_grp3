@@ -42,8 +42,8 @@ jobs:
         with:
           node-version: 20 # Specify the Node.js version you need
 
-      # - name: Install dependencies
-      #   run: npm install
+      - name: Install dependencies
+        run: npm install
 
       - name: Install Snyk
         run: npm install -g snyk
@@ -62,11 +62,11 @@ jobs:
       - name: Run Snyk test
         run: snyk test     
 
-      # - name: Set up Terraform
-      #   uses: hashicorp/setup-terraform@v1
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
 
-      # - name: Terraform Format
-      #   run: terraform fmt -recursive
+      - name: Terraform Format
+        run: terraform fmt -recursive
 
       # - name: Terraform Init
       #   run: terraform init
