@@ -4,12 +4,12 @@
 resource "aws_iam_policy" "api_gateway_invoke_policy" { # tschui added
   name        = "APIGatewayInvokePolicy"
   description = "IAM policy to invoke the ShopFloor API Gateway"
-  policy      = jsonencode({
+  policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
-        "Effect"   : "Allow",
-        "Action"   : "execute-api:Invoke",
+        "Effect" : "Allow",
+        "Action" : "execute-api:Invoke",
         "Resource" : "${aws_api_gateway_rest_api.shopFloor_api_gw.execution_arn}/*/*"
       }
     ]
@@ -17,8 +17,8 @@ resource "aws_iam_policy" "api_gateway_invoke_policy" { # tschui added
 }
 
 # Attach the policy to an IAM role
-resource "aws_iam_role" "api_gateway_invoke_role" {  # tschui added
-  name = "api-gateway-invoke-role"  
+resource "aws_iam_role" "api_gateway_invoke_role" { # tschui added
+  name = "api-gateway-invoke-role"
 
   assume_role_policy = <<EOF
 {
@@ -110,9 +110,9 @@ resource "aws_lambda_function" "shopFloorData_txnService" {
   timeout       = "15"
 
   source_code_hash = data.archive_file.lambdadata.output_base64sha256
-  
+
   # Enable X-Ray tracing
-  tracing_config {  # tschui added
+  tracing_config { # tschui added
     mode = "Active"
   }
 }
@@ -133,9 +133,9 @@ resource "aws_api_gateway_resource" "shopFloor_resource" {
 ## Post HTTP Method #
 
 resource "aws_api_gateway_method" "post_shopFloor_data" {
-  rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
-  resource_id   = aws_api_gateway_resource.shopFloor_resource.id
-  http_method   = "POST"
+  rest_api_id = aws_api_gateway_rest_api.shopFloor_api_gw.id
+  resource_id = aws_api_gateway_resource.shopFloor_resource.id
+  http_method = "POST"
   # authorization = "NONE"
   authorization = "AWS_IAM" # tschui changed
 }
@@ -171,9 +171,9 @@ resource "aws_api_gateway_integration" "integration_post_shopFloor_data" {
 ## Get HTTP Method ##
 
 resource "aws_api_gateway_method" "get_shopFloor_data" {
-  rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
-  resource_id   = aws_api_gateway_resource.shopFloor_resource.id
-  http_method   = "GET"
+  rest_api_id = aws_api_gateway_rest_api.shopFloor_api_gw.id
+  resource_id = aws_api_gateway_resource.shopFloor_resource.id
+  http_method = "GET"
   #authorization = "NONE"
   authorization = "AWS_IAM" # tschui changed
   request_parameters = {
@@ -213,9 +213,9 @@ resource "aws_api_gateway_integration" "integration_get_shopFloor_data" {
 ## Delete HTTP Method ##
 
 resource "aws_api_gateway_method" "delete_shopFloor_data" {
-  rest_api_id   = aws_api_gateway_rest_api.shopFloor_api_gw.id
-  resource_id   = aws_api_gateway_resource.shopFloor_resource.id
-  http_method   = "DELETE"
+  rest_api_id = aws_api_gateway_rest_api.shopFloor_api_gw.id
+  resource_id = aws_api_gateway_resource.shopFloor_resource.id
+  http_method = "DELETE"
   #authorization = "NONE"
   authorization = "AWS_IAM" # tschui changed
   request_parameters = {
@@ -298,14 +298,13 @@ resource "aws_api_gateway_stage" "stage-andon-api" {
   # Enabling X-Ray tracing
   xray_tracing_enabled = true # tschui added
 
- # Enabling Access Logging
+  # Enabling Access Logging
   access_log_settings { # tschui added
     destination_arn = aws_cloudwatch_log_group.api_gateway_logs.arn
     format          = "$context.requestId - $context.identity.sourceIp - $context.identity.userAgent - $context.requestTime - $context.status"
-  } 
+  }
 }
- # CloudWatch Log Group for Access Logs
- resource "aws_cloudwatch_log_group" "api_gateway_logs" {
+# CloudWatch Log Group for Access Logs
+resource "aws_cloudwatch_log_group" "api_gateway_logs" {
   name = "/aws/api-gateway/shopFloorData-logs"
-}    
 }

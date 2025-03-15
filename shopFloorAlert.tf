@@ -85,7 +85,7 @@ resource "aws_lambda_function" "send_alert_email" {
   source_code_hash = data.archive_file.lambdaalert.output_base64sha256
 
   # Enable X-Ray tracing
-  tracing_config {  # tschui added
+  tracing_config { # tschui added
     mode = "Active"
   }
 
@@ -93,8 +93,8 @@ resource "aws_lambda_function" "send_alert_email" {
 
 ##dynamodb##
 
-resource "aws_kms_key" "shop_floor_alerts_kms" {  # tschui added
-  description = "KMS key for encrypting shop_floor_alerts DynamoDB table"
+resource "aws_kms_key" "shop_floor_alerts_kms" { # tschui added
+  description         = "KMS key for encrypting shop_floor_alerts DynamoDB table"
   enable_key_rotation = true
 }
 
@@ -117,15 +117,15 @@ resource "aws_dynamodb_table" "shop_floor_alerts" {
     type = "S"
   }
 
-   point_in_time_recovery { # tschui added
-    enabled = true  # Enable Point-in-Time Recovery (PITR)
-  } 
+  point_in_time_recovery { # tschui added
+    enabled = true         # Enable Point-in-Time Recovery (PITR)
+  }
 
-   # Enable server-side encryption with customer-managed KMS key
-  server_side_encryption {  # tschui added
-    enabled       = true
-    kms_key_arn   = aws_kms_key.shop_floor_alerts_kms.arn
-  } 
+  # Enable server-side encryption with customer-managed KMS key
+  server_side_encryption { # tschui added
+    enabled     = true
+    kms_key_arn = aws_kms_key.shop_floor_alerts_kms.arn
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "trigger" {
