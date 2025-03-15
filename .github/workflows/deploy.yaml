@@ -38,20 +38,25 @@ jobs:
           aws-region: ap-southeast-1
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: 20 # Specify the Node.js version you need
 
-      # - name: Install dependencies
-      #   run: npm install
+      - name: Install dependencies
+        run: npm install
 
       - name: Install Snyk
         run: npm install -g snyk
 
-      - name: Authenticate Snyk
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk auth $SNYK_TOKEN
+      # - name: Authenticate Snyk
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #   run: snyk auth $SNYK_TOKEN
+
+      - name: Run Snyk test
+        uses: snyk/actions/setup@v2
+        with:
+          snyk-token: ${{ secrets.SNYK_TOKEN }}        
   
       - name: Run Snyk code test
         run: snyk code test
