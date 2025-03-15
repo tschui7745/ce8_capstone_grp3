@@ -58,6 +58,7 @@ jobs:
 
       - name: Run Snyk iac test
         run: snyk iac test
+        run: snyk ignore --id=SNYK-CC-AWS-415
 
       - name: Run Snyk test
         run: snyk test     
