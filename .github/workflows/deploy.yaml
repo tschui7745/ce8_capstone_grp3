@@ -12,7 +12,7 @@
 #   git push
 ################################################################################################################
 
-Name: AWS Multienvironemnt Deployment
+name: AWS Multienvironemnt Deployment
 
 on:
   push:
