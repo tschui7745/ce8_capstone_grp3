@@ -1,5 +1,15 @@
 ################################################################################################################
-# The below new scripts is created for uat purpose. The check-in will be done to uat branch in GitHub
+# The below new script is created to test uat repo in your GitHub.
+# 1) Rememebr to allow Actions in your GitHub
+#
+# 2) Remember to add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY for Secrets and Variables in your GitHub
+#
+# 3) GitHub commands to commit change to uat repo
+#   git switch uat
+#   git status
+#   git add .
+#   git commit -m "1st commit"
+#   git push
 ################################################################################################################
 
 Name: AWS Multienvironemnt Deployment
@@ -70,7 +80,7 @@ jobs:
       #   run: terraform destroy -auto-approve
 
 ################################################################################################################
-# The below original scripts will generate error, therefore it is commented
+# The below original script will be generating errors, therefore this script is commented.
 ################################################################################################################
 
 # Name: AWS Multienvironemnt Deployment
