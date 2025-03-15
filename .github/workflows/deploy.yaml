@@ -48,16 +48,11 @@ jobs:
       - name: Install Snyk
         run: npm install -g snyk
 
-      # - name: Authenticate Snyk
-      #   env:
-      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      #   run: snyk auth $SNYK_TOKEN
+      - name: Authenticate Snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth $SNYK_TOKEN
 
-      - name: Run Snyk test
-        uses: snyk/actions/setup@v2
-        with:
-          snyk-token: ${{ secrets.SNYK_TOKEN }}        
-  
       - name: Run Snyk code test
         run: snyk code test
 
