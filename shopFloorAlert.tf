@@ -106,6 +106,10 @@ resource "aws_dynamodb_table" "shop_floor_alerts" {
     name = "SK"
     type = "S"
   }
+
+   point_in_time_recovery {
+    enabled = true  # Enable Point-in-Time Recovery (PITR)
+  } 
 }
 
 resource "aws_lambda_event_source_mapping" "trigger" {
