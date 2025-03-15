@@ -1,15 +1,15 @@
 locals {
-  name_prefix = "chek" # provide your name prefix
+  name_prefix = "tschui" # provide your name prefix
 }
 
 ##SES##
 
 resource "aws_ses_email_identity" "source_alert_email" {
-  email = "chekyeaw@gmail.com"
+  email = "tschui@gmail.com"
 }
 
 resource "aws_ses_email_identity" "delivery_alert_email" {
-  email = "chekyeaw+ce8@gmail.com"
+  email = "tschui+ce8@gmail.com"
 }
 
 ## shopFloorAlert Lambda Execution Role ##
