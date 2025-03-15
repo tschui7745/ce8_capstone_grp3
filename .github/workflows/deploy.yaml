@@ -2,7 +2,7 @@
 # The below new script is created to test uat repo in your GitHub.
 # 1) Rememebr to allow Actions in your GitHub
 #
-# 2) Remember to add AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY for Secrets and Variables in your GitHub
+# 2) Remember to add AWS_ACCESS_KEY_ID , AWS_SECRET_ACCESS_KEY and SNYK_TOKEN for Secrets and Variables in your GitHub
 #
 # 3) GitHub commands to commit change to uat repo
 #   git switch uat
@@ -12,7 +12,7 @@
 #   git push
 ################################################################################################################
 
-name: AWS Multienvironemnt Deployment
+Name: AWS Multienvironemnt Deployment
 
 on:
   push:
@@ -22,9 +22,10 @@ on:
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  deploy_dev:
+  deploy_uat:
     if: github.ref == 'refs/heads/uat'
     runs-on: ubuntu-latest
+    # needs: deploy_dev    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -73,11 +74,11 @@ jobs:
       - name: Terraform Plan
         run: terraform plan        
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      # - name: Terraform Destroy
+      #   run: terraform destroy -auto-approve
 
 ################################################################################################################
 # The below original script will be generating errors, therefore this script is commented.
