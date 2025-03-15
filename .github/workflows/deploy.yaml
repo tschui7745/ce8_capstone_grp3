@@ -57,7 +57,7 @@ jobs:
         run: snyk code test
 
       - name: Run Snyk iac test
-        run: snyk iac test --all-projects --exclude=SNYK-CC-AWS-415 # This specific rule flags when an AWS CloudWatch Log Group is not encrypted with a customer-managed key (CMK)
+        run: snyk iac test
 
       - name: Run Snyk test
         run: snyk test     
