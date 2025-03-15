@@ -68,17 +68,17 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -recursive
 
-      # - name: Terraform Init
-      #   run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-      # - name: Terraform Plan
-      #   run: terraform plan        
+      - name: Terraform Plan
+        run: terraform plan        
 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
-      # - name: Terraform Destroy
-      #   run: terraform destroy -auto-approve
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
 
 ################################################################################################################
 # The below original script will be generating errors, therefore this script is commented.
