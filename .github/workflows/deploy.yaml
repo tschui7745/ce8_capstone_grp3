@@ -23,7 +23,7 @@ on:
 
 jobs:
   deploy_dev:
-    if: github.ref == 'uat'
+    if: github.ref == 'refs/heads/uat'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
